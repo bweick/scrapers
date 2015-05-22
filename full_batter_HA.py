@@ -18,11 +18,11 @@ def main():
     bblink = 'http://www.baseball-reference.com/'
     
     for yr in years:
-        filepath = '...Player Dictionaries\\MLB\\bat_HA_' + yr + '.json'        
+        filepath = '...Player Dictionaries\\MLB\\bat_HA_' + str(yr) + '.json'        
         
         full_batters = {}
         for batter in batters:
-            newlink = bblink + 'players/split.cgi?id=' + batters[batter] + '&year=' + yr + '&t=b'
+            newlink = bblink + 'players/split.cgi?id=' + batters[batter] + '&year=' + str(yr) + '&t=b'
             full_batters.update({batter:newlink})
             
         batstat = {}
