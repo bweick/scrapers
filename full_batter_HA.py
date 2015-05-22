@@ -3,12 +3,13 @@ import json
 from time import strftime 
 
 def main():
-    print 'Running Batter Home/Away Splits'
+    print 'Running Batter Home/Away Splits...'
     stime = strftime("%Y-%m-%d %H:%M:%S")
     print stime
     
     filepath = '...\\Player Dictionaries\\MLB\\bat_HA.json'
     
+    #open dictionary of batter names
     json_file = open('...\\Player Dictionaries\\MLB\\all_batters.json')
     json_str = json_file.read()
     batters = json.loads(json_str)
@@ -18,13 +19,16 @@ def main():
     bblink = 'http://www.baseball-reference.com/'
     
     for yr in years:
+        # set filepath for new dictionary
         filepath = '...Player Dictionaries\\MLB\\bat_HA_' + str(yr) + '.json'        
         
+        #create urls for each player
         full_batters = {}
         for batter in batters:
             newlink = bblink + 'players/split.cgi?id=' + batters[batter] + '&year=' + str(yr) + '&t=b'
             full_batters.update({batter:newlink})
-            
+        
+        # scrape data    
         batstat = {}
         for name in full_batters:
             print name
@@ -36,17 +40,20 @@ def main():
             if not stats:
                 None
             else:
+                # create header for dataframe
                 header = []
                 for th in stats[0].findAll('th'):
                     if not th.getText() in header:
                         header.append(th.getText())
                 
+                # create full dataframe
                 reg = scrape_tools.TableToFrame(stats, header)
                 reg = reg.reset_index(drop=True)
                 if reg.empty:
                     None
                 batstat.update({name:reg})
         
+        # clean dataframe
         clean_player = {}
         for key in batstat:
             df = batstat[key]
