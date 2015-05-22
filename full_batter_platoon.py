@@ -8,7 +8,7 @@ def main():
     print stime
     
     #open dictionary with batter links
-    json_file = open('C:\\Users\\Brian\\Documents\\Player Dictionaries\\MLB\\all_batters.json')
+    json_file = open('...\\Player Dictionaries\\MLB\\all_batters.json')
     json_str = json_file.read()
     batters = json.loads(json_str)
     json_file.close()
@@ -18,7 +18,7 @@ def main():
     for yr in years:
         print yr
         # create filepath and full urls for each player
-        filepath = 'C:\\Users\\Brian\\Documents\\Player Dictionaries\\MLB\\bat_platoon_' + str(yr) + '.json'
+        filepath = '...\\Player Dictionaries\\MLB\\bat_platoon_' + str(yr) + '.json'
         full_batters = {}
         for batter in batters:
             newlink = bblink + 'players/split.cgi?id=' + batters[batter] + '&year=' + str(yr) + '&t=b'
