@@ -3,12 +3,11 @@ from time import strftime
 import scrape_tools
 
 def main():
-    print 'Running Batter Home/Away Splits'
+    print 'Running Batter Home/Away Splits...'
     stime = strftime("%Y-%m-%d %H:%M:%S")
     print stime
     
-    filepath = 'C:\\Users\\Brian\\Documents\\Player Dictionaries\\MLB\\bat_platoon.json'
-    
+    #open dictionary with batter links
     json_file = open('C:\\Users\\Brian\\Documents\\Player Dictionaries\\MLB\\all_batters.json')
     json_str = json_file.read()
     batters = json.loads(json_str)
@@ -18,6 +17,7 @@ def main():
     bblink = 'http://www.baseball-reference.com/'
     for yr in years:
         print yr
+        # create filepath and full urls for each player
         filepath = 'C:\\Users\\Brian\\Documents\\Player Dictionaries\\MLB\\bat_platoon_' + str(yr) + '.json'
         full_batters = {}
         for batter in batters:
@@ -26,6 +26,7 @@ def main():
             
         batstat = {}
         for name in full_batters:
+            #open urls
             print name
             url = full_batters[name]
             soup = scrape_tools.urlsoup(url)
@@ -35,17 +36,20 @@ def main():
             if not stats:
                 None
             else:
+                # create header for dataframe
                 header = []
                 for th in stats[0].findAll('th'):
                     if not th.getText() in header:
                         header.append(th.getText())
                 
+                #create dataframe
                 reg = scrape_tools.TableToFrame(stats, header)
                 reg = reg.reset_index(drop=True)
                 if reg.empty:
                     None
             batstat.update({name:reg})
         
+        # clean datframe
         clean_player = {}
         for key in batstat:
             df = batstat[key]
@@ -60,11 +64,7 @@ def main():
             clean_player.update({key:df})
             
         #convert dataframes into json and save as dictionary
-        jsplayer_data = {}
-        for player in clean_player:
-            df = clean_player[player]
-            jsdf = df.to_json()
-            jsplayer_data.update({player:jsdf})
+        jsplayer_data = scrape_tools.jsondump(clean_player)
         
         with open(filepath, 'wb') as fp:
             json.dump(jsplayer_data, fp)
