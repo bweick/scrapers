@@ -62,9 +62,10 @@ def main():
         df = batstat[key]
         df = df.reindex(columns = ['Year', 'Tm', 'PA', 'HR%', 'SO%', 'BB%', 'XBH%', 'X/H%', 'SO/W', 'AB/SO',
                                    'AB/HR', 'AB/RBI', 'GB/FB', 'GO/AO', 'IP%', 'LD%', 'HR/FB', 'IF/FB'])
-#        if key == 'Torii Hunter':
-#            df = df[:-3]
-#        df = df[:-2]
+        if key == 'Torii Hunter' or 'Aramis Ramirez':
+            df = df[:-3]
+        else:
+            df = df[:-2]
         df = df[np.isnan(df['AB/HR']) == False]
         df['GB/FB'] = df['GB/FB'].astype(float)
         df['LD%'] = pd.Series([(float(str(l)[:-1]))/100 for l in df['LD%']], index = df.index)
