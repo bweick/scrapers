@@ -1,3 +1,9 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Wed Mar 25 18:27:05 2015
+
+@author: Brian
+"""
 import json
 import pandas as pd
 from time import strftime 
@@ -42,17 +48,19 @@ def main():
                 if not th.getText() in header:
                     header.append(th.getText())
             
+            header = filter(None, header)
             reg = scrape_tools.TableToFrame(stats, header)
             reg = reg.reset_index(drop=True)
             if reg.empty:
                 None
         batstat.update({name:reg})
-    
+
     #clean up dataframe
     clean_player = {}
     for key in batstat:
+        print key
         df = batstat[key]
-        df = df.reindex(columns = ['Tm', 'PA', 'HR%', 'SO%', 'BB%', 'XBH%', 'X/H%', 'SO/W', 'AB/SO',
+        df = df.reindex(columns = ['Year', 'Tm', 'PA', 'HR%', 'SO%', 'BB%', 'XBH%', 'X/H%', 'SO/W', 'AB/SO',
                                    'AB/HR', 'AB/RBI', 'GB/FB', 'GO/AO', 'IP%', 'LD%', 'HR/FB', 'IF/FB'])
 #        if key == 'Torii Hunter':
 #            df = df[:-3]
@@ -79,3 +87,4 @@ def main():
     print etime
 if __name__ == "__main__":
     main()
+    
